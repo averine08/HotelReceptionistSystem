@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+D:\Binus Univ\Semester 3\Object Oriented Programming - COMP6820001 - LEC\AoL Workspace\.metadata\.plugins\org.eclipse.jdt.core
+3937943378.index
+2231087361.index
+2934386818.index
+1865797976.index

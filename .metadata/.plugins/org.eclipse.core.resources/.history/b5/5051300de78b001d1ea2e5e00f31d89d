@@ -1,0 +1,557 @@
+package main;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+
+	Scanner scan = new Scanner(System.in);
+	
+	ArrayList<Customer> msCustomer = new ArrayList<>();
+	ArrayList<Room> msRoom = new ArrayList<>();
+	
+	public static void main(String[] args) {
+		new Main();
+	}
+	
+	public Main() {
+		insertDummyData();
+		preMenu();
+	}
+	
+	private void insertDummyData() {
+		msRoom.add(new Room("Personal", 101, 100000, true));
+		msRoom.add(new Room("Personal", 102, 100000, false));
+		msRoom.add(new Room("Personal", 103, 100000, false));
+		msRoom.add(new Room("Family", 104, 250000, true));
+		msRoom.add(new Room("VIP", 105, 500000, true));
+		msRoom.add(new Room("Personal", 201, 100000, false));
+		msRoom.add(new Room("Personal", 202, 100000, false));
+		msRoom.add(new Room("Personal", 203, 100000, false));
+		msRoom.add(new Room("Family", 204, 250000, true));
+		msRoom.add(new Room("VIP", 205, 500000, false));
+		msRoom.add(new Room("Personal", 301, 100000, true));
+		msRoom.add(new Room("Personal", 302, 100000, false));
+		msRoom.add(new Room("Personal", 303, 100000, false));
+		msRoom.add(new Room("Family", 304, 250000, false));
+		msRoom.add(new Room("VIP", 305, 500000, false));
+		
+		msCustomer.add(new Customer("Averina", 101, 3));
+		msCustomer.add(new Customer("Gabriel", 104, 2));
+		msCustomer.add(new Customer("Gavriel", 105, 5));
+		msCustomer.add(new Customer("Karen", 204, 3));
+		msCustomer.add(new Customer("Roland", 301, 1));
+	}
+	
+	private void startView() {
+		Delay th = new Delay();
+		th.run(750);
+		System.out.println("  _______________________________________________________________________________");
+		th.run(750);
+		System.out.println(" / \\                                                                             \\*");
+		th.run(750);
+		System.out.println(" \\__| Hotel Reservation System_                                                  |*");
+		th.run(750);
+		System.out.println("    |   ___     ___    ____  \\ \\ ______    __  __   ___  _______  _____   _      |*");
+		th.run(750);
+		System.out.println("    |  / _ \\   / _ \\  |  _ \\ | ||  ___|   | | | |  / _ \\ |_   _| |  ___| | |     |*");
+		th.run(750);
+		System.out.println("    | | | | | | | | | | |_| |/_/| |___    | |_| | | | | |  | |   | |___  | |     |*");
+		th.run(750);
+		System.out.println("    | | | | | | | | | | ___/    |____ |   |  _  | | | | |  | |   |  ___| | |     |*");
+		th.run(750);
+		System.out.println("    | | |_| | | |_| | | |        ___| |   | | | | | |_| |  | |   | |___  | |___  |*");
+		th.run(750);
+		System.out.println("    |  \\___/   \\___/  |_|       |_____|   |_| |_|  \\___/   |_|   |_____| |_____| |*");
+		th.run(750);
+		System.out.println("    |                                                                            |*");
+		th.run(750);
+		System.out.println("    \\_/_________________________________________________________________________/*");
+		th.run(750);
+		System.out.println("       Oleh: Kelompok 2 LF01\n");
+		th.run(750);
+	}
+	
+	private void startViewInstant() {
+		System.out.println("  _______________________________________________________________________________");
+		System.out.println(" / \\                                                                             \\*");
+		System.out.println(" \\__| Hotel Reservation System_                                                  |*");
+		System.out.println("    |   ___     ___    ____  \\ \\ ______    __  __   ___  _______  _____   _      |*");
+		System.out.println("    |  / _ \\   / _ \\  |  _ \\ | ||  ___|   | | | |  / _ \\ |_   _| |  ___| | |     |*");
+		System.out.println("    | | | | | | | | | | |_| |/_/| |___    | |_| | | | | |  | |   | |___  | |     |*");
+		System.out.println("    | | | | | | | | | | ___/    |____ |   |  _  | | | | |  | |   |  ___| | |     |*");
+		System.out.println("    | | |_| | | |_| | | |        ___| |   | | | | | |_| |  | |   | |___  | |___  |*");
+		System.out.println("    |  \\___/   \\___/  |_|       |_____|   |_| |_|  \\___/   |_|   |_____| |_____| |*");
+		System.out.println("    |                                                                            |*");
+		System.out.println("    \\_/_________________________________________________________________________/*");
+		System.out.println("       Oleh: Kelompok 2 LF01\n");
+	}
+	
+	private void preMenu() {
+		startView();
+		int input = -1;
+		do {
+			System.out.println("       1. Mulai");
+			System.out.println("       2. Keluar");
+			System.out.print("       Pilih: ");
+			try {
+				input = scan.nextInt(); scan.nextLine();
+			} catch (Exception e) {
+				scan.nextLine();
+			}
+			
+			switch (input) {
+			case 1:
+				enter();
+				mainMenu();
+				closingMenu();
+				return;
+			case 2:
+				enter();
+				closingMenu();
+				return;
+			default:
+				enter();
+				startViewInstant();
+				System.out.println("       (Input harus berupa angka 1 atau 2!)");
+				input = -1;
+				break;
+			}
+			
+		} while (input != 2);
+	}
+	
+	private void mainMenu() {
+		Delay th = new Delay();
+		int input = -1;
+		do{
+			enter();
+			System.out.println("***********");
+			System.out.println("*MAIN MENU*");
+			System.out.println("***********");
+			System.out.println("1. Check In Pelanggan");
+			System.out.println("2. Lihat Daftar Ruangan");
+			System.out.println("3. Lihat Daftar Pelanggan");
+			System.out.println("4. Check Out Pelanggan");
+			System.out.println("5. Keluar");
+			System.out.print("\nPilih: ");
+			try {
+				input = scan.nextInt(); scan.nextLine();
+			} catch (Exception e) {
+				scan.nextLine();
+			}
+			
+			switch (input) {
+			case 1:
+				enter();
+				checkInMenu();
+				input = -1;
+				break;
+			case 2:
+				daftarRuangan();
+				input = -1;
+				break;
+			case 3:
+				daftarPelanggan();
+				System.out.print("Press Enter to continue..."); scan.nextLine();
+				input = -1;
+				break;
+			case 4:
+				enter();
+				checkOutMenu();
+				input = -1;
+				break;
+			}
+			
+		} while (input != 5);
+	}
+	
+	private void checkInMenu() {
+		Delay th = new Delay();
+		int penuh = 0;
+		for (Room room : msRoom) {
+			if (!room.isfilled()) {
+				penuh = 1;
+			}
+		}
+		if (penuh == 0) {
+			System.out.println("Please wait...");
+			System.out.print("Loading ");		
+			for(int i=0; i<3; i++) {
+				th.run(750);
+				System.out.print("*");
+			} System.out.println(); th.run(750);
+			enter();
+			System.out.println("===================================================");
+			System.out.println("||             Semua ruangan penuh!              ||");
+			System.out.println("===================================================");
+			System.out.println("Tidak dapat menerima pelanggan selama ruangan penuh!");
+			System.out.print("Press Enter to continue...");
+			scan.nextLine(); return;
+		}
+		System.out.println("====================================================");
+		String nama;
+		int cek = 1;
+		do {
+			if (cek == 0) {
+				System.out.println("Input harus berupa alfabet!");
+			} else if (cek == 2) {
+				System.out.println("Input tidak boleh hanya berupa spasi saja!");
+			} else if (cek == 3) {
+				System.out.println("Input tidak boleh kosong!");
+			} else if (cek == 4) {
+				System.out.println("Input tidak boleh diawali dengan spasi!");
+			}
+			System.out.print("Masukkan nama pelanggan [Harus berupa alfabet] [tekan 0 untuk cancel]: ");
+			nama = scan.nextLine();
+			
+			if (nama.charAt(0) == '0') {
+				System.out.println("Check In dibatalkan");
+				System.out.print("Press Enter to continue..."); scan.nextLine();
+				return;
+			}
+			
+			cek = checkAlfabetNama(nama);
+		} while (cek != 1);
+		
+		int nomorRuangan = -1;
+		viewRuanganKosong();
+		do {
+			if (cek == 0) {
+				System.out.println("Input harus sesuai dengan tabel yang diberikan di atas!");
+			} else if (cek == 2){
+				System.out.println("Ruangan nomor "+nomorRuangan + " penuh, pilihlah ruangan lain");
+			}
+			System.out.print("Input nomor ruangan yang hendak dipilih [tekan 0 untuk cancel]: ");
+			try {
+				nomorRuangan = scan.nextInt(); scan.nextLine();
+			} catch (Exception e) {
+				scan.nextLine();
+				System.out.println("Input harus berupa angka!");
+			}
+			if (nomorRuangan == 0) {
+				System.out.println("Check In dibatalkan");
+				System.out.print("Press Enter to continue..."); scan.nextLine();
+				return;
+			}
+			cek = checkNomorRuangan(nomorRuangan);
+		} while (cek != 1);
+		
+		int lamaInap = -1;
+		do {
+			System.out.print("Input durasi inap (hari) [tekan 0 untuk cancel]: ");
+			try {
+				lamaInap = scan.nextInt(); scan.nextLine();
+			} catch (Exception e) {
+				scan.nextLine();
+				System.out.println("Input harus berupa angka!");
+				cek = 0;
+			}
+			if (nomorRuangan == 0) {
+				System.out.println("Check In dibatalkan");
+				System.out.print("Press Enter to continue..."); scan.nextLine();
+				return;
+			}
+			
+			if (lamaInap < 0) {
+				cek = 0;
+				System.out.println("Input harus berupa angka positif!");
+			} else if (lamaInap == 0) {
+				cek = 0;
+				System.out.println("Minimal durasi inap adalah 1 hari!");
+			} else if (lamaInap > 10) {
+				cek = 0;
+				System.out.println("Maksimal durasi inap adalah 10 hari!");
+			} else {
+				cek = 1;
+			}
+		} while (cek != 1);	
+		
+		msCustomer.add(new Customer(nama, nomorRuangan, lamaInap));
+		for (Room room : msRoom) {
+			if(room.getRoomNumber() == nomorRuangan) {
+				room.setfilled(true);
+			}
+		}
+		
+		System.out.println("Check In sukses! Silahkan berikan kunci kamar kepada pelanggan!");
+		System.out.print("Press Enter to continue..."); scan.nextLine();
+	}
+	
+	private int checkNomorRuangan(int nomorRuangan) {
+		for (Room room : msRoom) {
+			if (room.getRoomNumber() == nomorRuangan) {
+				if (room.isfilled()) {
+					return 2;
+				} else {
+					return 1;
+				}
+			}
+		}
+		return 0;
+	}
+	
+	private int checkAlfabetNama(String nama) {
+		int spasi = 2;
+		int num = 0;
+		
+		if (nama.isEmpty()) {
+			return 3;
+		} else if (nama.charAt(0) == ' ') {
+			return 4;
+		}
+		for (int i=0; i<nama.length(); i++) {
+			if (nama.charAt(i) == ' ') {
+				spasi = 2;
+			}
+			else if(!(nama.charAt(i) >='a'&&nama.charAt(i) <='z') && !(nama.charAt(i) >='A'&&nama.charAt(i) <='Z')) {
+				return 0;
+			}
+			else {
+				spasi = 0;
+				num = 1;
+			}
+		}
+		if (spasi == 2) {
+			return spasi;
+		} else {
+			return num;
+		}
+		
+	}
+	
+	private void daftarRuangan() {
+		int input = -1;
+		viewDaftarRuangan();
+		do {
+			System.out.println("Pilih:");
+			System.out.println("1. Urutkan berdasarkan nomor ruangan");
+			System.out.println("2. Tampilkan hanya ruangan yang kosong");
+			System.out.println("3. Tampilkan hanya ruangan yang penuh");
+			System.out.println("4. Keluar");
+			System.out.print("Pilih: ");
+			try {
+				input = scan.nextInt(); scan.nextLine();
+			} catch (Exception e) {
+				scan.nextLine();
+			}
+			switch (input) {
+			case 1:
+				viewDaftarRuangan();
+				input = -1;
+				break;
+			case 2:
+				viewRuanganKosong();
+				input = -1;
+				break;
+			case 3:
+				viewRuanganPenuh();
+				input = -1;
+				break;
+			}
+		} while(input != 4);
+	}
+	
+	private void viewDaftarRuangan() {
+		Delay th = new Delay();
+		System.out.println("Please wait...");
+		System.out.print("Loading ");		
+		for(int i=0; i<3; i++) {
+			th.run(750);
+			System.out.print("*");
+		} System.out.println(); th.run(750);
+		enter();
+		System.out.println("Daftar ruangan diurutkan berdasarkan nomor ruangan");
+		int i=1;
+		System.out.println("====================================================");
+		System.out.printf("|| %-2s || %-11s || %-9s || %-12s ||\n", "No", "Room Number", "Room Type", "Availability");
+		System.out.println("====================================================");
+		for (Room room : msRoom) {
+			if (room.isfilled()) {
+				System.out.printf("|| %-2d ||     %-7d ||  %-8s ||    %-9s ||\n", i++, room.getRoomNumber(), room.getRoomType(), "Penuh");
+			} else {
+				System.out.printf("|| %-2d ||     %-7d ||  %-8s ||    %-9s ||\n", i++, room.getRoomNumber(), room.getRoomType(), "Kosong");
+			}
+		}
+		System.out.println("====================================================");
+	}
+	
+	private void viewRuanganKosong() {
+		Delay th = new Delay();
+		System.out.println("Please wait...");
+		System.out.print("Loading ");
+		for(int i=0; i<3; i++) {
+			th.run(750);
+			System.out.print("*");
+		} System.out.println(); th.run(750);
+		enter();
+		int i=1;
+		int cek = 0;
+		System.out.println("Daftar ruangan yang kosong");
+		System.out.println("====================================================");
+		System.out.printf("|| %-2s || %-11s || %-9s || %-12s ||\n", "No", "Room Number", "Room Type", "Availability");
+		System.out.println("====================================================");
+		for (Room room : msRoom) {
+			if (!room.isfilled()) {
+				cek = 1;
+				System.out.printf("|| %-2d ||     %-7d ||  %-8s ||    %-9s ||\n", i++, room.getRoomNumber(), room.getRoomType(), "Kosong");
+			}
+		}
+		if (cek == 0) {
+			System.out.println("||              Semua ruangan penuh!              ||");
+		}
+		System.out.println("====================================================");
+	}
+	
+	private void viewRuanganPenuh() {
+		Delay th = new Delay();
+		System.out.println("Please wait...");
+		System.out.print("Loading ");
+		for(int i=0; i<3; i++) {
+			th.run(750);
+			System.out.print("*");
+		} System.out.println(); th.run(750);
+		enter();
+		int i=1;
+		int cek = 0;
+		System.out.println("Daftar ruangan yang penuh");
+		System.out.println("====================================================");
+		System.out.printf("|| %-2s || %-11s || %-9s || %-12s ||\n", "No", "Room Number", "Room Type", "Availability");
+		System.out.println("====================================================");
+		for (Room room : msRoom) {
+			if (room.isfilled()) {
+				cek = 1;
+				System.out.printf("|| %-2d ||     %-7d ||  %-8s ||    %-9s ||\n", i++, room.getRoomNumber(), room.getRoomType(), "Penuh");
+			}
+		}
+		if (cek == 0) {
+			System.out.println("||             Semua ruangan kosong!              ||");
+		}
+		System.out.println("====================================================");
+	}
+		
+	
+	private void daftarPelanggan() {
+		Delay th = new Delay();
+		System.out.println("Please wait...");
+		System.out.print("Loading ");
+		for(int i=0; i<3; i++) {
+			th.run(750);
+			System.out.print("*");
+		} System.out.println(); th.run(750);
+		enter();
+		int i=1;
+		System.out.println("Daftar pelanggan yang sedang menginap");
+		System.out.println("============================================================");
+		System.out.printf("|| %-2s || %-15s || %-11s || %-14s ||\n", "No", "Customer", "Room Number", "Length of stay");
+		System.out.println("============================================================");
+		for (Customer customer : msCustomer) {
+			System.out.printf("|| %-2d || %-15s ||     %-7d ||    %2d day(s)   ||\n", i++, customer.getName(), customer.getRoomNumber(),customer.getLengthOfStay());
+		}
+		System.out.println("============================================================");
+	}
+	
+	private void checkOutMenu() {
+		daftarPelanggan();
+		int input = -1;
+		int cek = 1;
+		do {
+			System.out.print("Input nomor ruangan untuk Check Out [tekan 0 untuk cancel]: ");
+			try {
+				input = scan.nextInt(); scan.nextLine();
+			} catch (Exception e) {
+				scan.nextLine();
+				System.out.println("Input harus berupa angka!");
+			}
+			
+			if (input == 0) {
+				System.out.println("Check Out dibatalkan");
+				System.out.print("Press Enter to continue..."); scan.nextLine();
+				return;
+			}
+			
+			cek = checkOutCheck(input);
+			if(cek == 0) {
+				System.out.println("Input harus sesuai dengan tabel yang diberikan di atas!");
+			}
+		} while (cek != 1);
+		
+		for (Customer customer : msCustomer) {
+			if (customer.getRoomNumber() == input) {
+				System.out.println("Pelanggan menginap selama " + customer.getLengthOfStay()+" hari");
+				for (Room room : msRoom) {
+					if (room.getRoomNumber() == input) {
+						System.out.println("Tipe kamar yang dipilih adalah: " + room.getRoomType());
+						System.out.println("Total tagihannya adalah: Rp. " + customer.getLengthOfStay()*room.getRoomPricePerNight());
+						System.out.println();
+					}
+				}
+				break;
+			}
+		}
+		
+		String pembayaran;
+		do {
+			System.out.print("Pilih metode pembayaran [Gopay | ShopeePay | Cash] (case insensitive) [tekan 0 untuk cancel]: ");
+			pembayaran = scan.nextLine();
+			
+			if (pembayaran.charAt(0) == '0') {
+				System.out.println("Check Out dibatalkan");
+				System.out.print("Press Enter to continue..."); scan.nextLine();
+				return;
+			}
+			
+			cek = checkPembayaran(pembayaran);
+			if (cek == 0) {
+				System.out.println("Periksa lagi input yang dipaparkan!");
+			}
+		} while (cek != 1);
+		
+		for (Customer customer : msCustomer) {
+			if (customer.getRoomNumber() == input) {
+				msCustomer.remove(msCustomer.indexOf(customer));
+				break;
+			}
+		}
+		
+		System.out.println("Check Out dan pembayaran berhasil!");
+		System.out.println("Press Enter to continue..."); scan.nextLine();
+	}
+	
+	private int checkPembayaran(String pembayaran) {
+		if (pembayaran.compareToIgnoreCase("Gopay") == 0 || pembayaran.compareToIgnoreCase("ShopeePay") == 0 || pembayaran.compareToIgnoreCase("Cash") == 0 ) {
+			return 1;
+		}
+		return 0;
+	}
+	
+	private int checkOutCheck(int input) {
+		for (Customer customer : msCustomer) {
+			if (customer.getRoomNumber() == input) {
+				return 1;
+			}
+		}
+		return 0;
+	}
+	
+	private void closingMenu() {
+		System.out.println("Thank You!");
+	}
+	
+	private void enter() {
+		for (int i = 0; i < 20; i++) {
+			System.out.println();
+		}
+	}
+}
+
+
+class Delay extends Thread{
+	public void run(int time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}

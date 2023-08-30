@@ -1,0 +1,45 @@
+package main;
+
+public class Transaction {
+	private int CustomerID;
+	private int RoomNumber;
+	private int LengthOfStay;
+}
+
+public class Customer {
+	private String name;
+	
+	private int roomNumber;
+	private int lengthOfStay;
+	
+	public Customer(String name, int roomNumber, int lengthOfStay) {
+		this.setName(name);
+		this.setRoomNumber(roomNumber);
+		this.setLengthOfStay(lengthOfStay);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getRoomNumber() {
+		return roomNumber;
+	}
+
+	public void setRoomNumber(int roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+
+	public int getLengthOfStay() {
+		return lengthOfStay;
+	}
+
+	public void setLengthOfStay(int lengthOfStay) {
+		this.lengthOfStay = lengthOfStay;
+	}
+
+}

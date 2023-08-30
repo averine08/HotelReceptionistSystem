@@ -1,0 +1,133 @@
+package Forms;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
+import Data.*;
+import Model.*;
+
+public class LihatDaftarPelangganForm {
+
+	private JFrame frmLihatDaftarPelangganForm;
+	private JPanel panelTable;
+	private JTable tableDaftarPelanggan;
+	
+	private DefaultTableModel tableModel;
+
+	public LihatDaftarPelangganForm() {
+		Initialize();
+	}
+	
+	public void Show() {
+		LihatDaftarPelangganForm.this.frmLihatDaftarPelangganForm.setVisible(true);
+	}
+	
+	public void Hide() {
+		LihatDaftarPelangganForm.this.frmLihatDaftarPelangganForm.setVisible(false);
+	}
+
+	private void Initialize() {
+		frmLihatDaftarPelangganForm = new JFrame();
+		frmLihatDaftarPelangganForm.getContentPane().setBackground(new Color(255, 255, 255));
+		frmLihatDaftarPelangganForm.setTitle("Hotel Room Reservation System");
+		frmLihatDaftarPelangganForm.setBounds(100, 100, 600, 400);
+		frmLihatDaftarPelangganForm.setLocationRelativeTo(null);
+		frmLihatDaftarPelangganForm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		frmLihatDaftarPelangganForm.getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		JPanel panelTop = new JPanel();
+		panelTop.setBackground(new Color(255, 255, 255));
+		FlowLayout flowLayoutPanelTop = (FlowLayout) panelTop.getLayout();
+		flowLayoutPanelTop.setAlignment(FlowLayout.LEFT);
+		flowLayoutPanelTop.setVgap(12);
+		flowLayoutPanelTop.setHgap(12);
+		
+		JPanel panelTopContent = new JPanel();
+		panelTopContent.setBackground(new Color(255, 255, 255));
+		panelTop.add(panelTopContent);
+		panelTopContent.setLayout(new BoxLayout(panelTopContent, BoxLayout.Y_AXIS));
+		
+		JLabel lblHeader = new JLabel("Daftar Pelanggan");
+		lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		panelTopContent.add(lblHeader);
+		
+		panelTopContent.add(Box.createRigidArea(new Dimension(0, 5)));
+		
+		JLabel lblDesc = new JLabel("Lihat semua pelanggan yang sedang menginap");
+		lblDesc.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
+		panelTopContent.add(lblDesc);
+		
+		frmLihatDaftarPelangganForm.getContentPane().add(panelTop, BorderLayout.NORTH);
+		
+		
+		panelTable = new JPanel();
+		panelTable.setBackground(new Color(255, 255, 255));
+		
+		frmLihatDaftarPelangganForm.getContentPane().add(panelTable, BorderLayout.CENTER);
+		
+		frmLihatDaftarPelangganForm.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Hide();
+				new MainForm().Show();
+			}
+		});
+		
+		SetupTableDaftarPelanggan();
+		LoadDataTableDaftarPelanggan();
+	}
+	
+	private void SetupTableDaftarPelanggan() {
+		String[] columnNames = new String[] { "No", "Pelanggan", "Nomor Kamar", "Tanggal Cek In", "Lama Menginap" };
+		tableModel = new DefaultTableModel(columnNames, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		
+		panelTable.setLayout(null);
+		
+		tableDaftarPelanggan = new JTable(tableModel);
+		tableDaftarPelanggan.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		tableDaftarPelanggan.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableDaftarPelanggan.setRowHeight(24);
+		
+		JScrollPane scrollTableDaftarPelanggan = new JScrollPane(tableDaftarPelanggan);
+		scrollTableDaftarPelanggan.setBounds(12, 12, 560, 262);
+		
+		panelTable.add(scrollTableDaftarPelanggan);
+	}
+	
+	private void LoadDataTableDaftarPelanggan() {
+		ArrayList<Transaction> transactionsData = (ArrayList<Transaction>) new MsTransaction().getAllTransactionList()
+				.stream()
+				.filter(transaction -> transaction.isPaid() == false)
+				.collect(Collectors.toList());
+		
+		int number = 1;
+		for (Transaction transaction : transactionsData) {
+			tableModel.addRow(new Object[] { number, transaction.getCustomer().getName(), transaction.getRoomNumber(), transaction.getCheckInDate(), transaction.getLengthOfStay() + " hari" });
+			number++;
+		}
+		
+		tableModel.fireTableDataChanged();
+	}
+}

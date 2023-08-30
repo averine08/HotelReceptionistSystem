@@ -1,0 +1,104 @@
+package Forms;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import Program.AppSettings;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+public class CekOutPelangganForm {
+
+	private JFrame frmCheckOutPelangganForm;
+	private JTable tableDaftarKamar;
+
+	public CekOutPelangganForm() {
+		Initialize();
+	}
+	
+	public void Show() {
+		frmCheckOutPelangganForm.setVisible(true);
+	}
+	
+	public void Hide() {
+		frmCheckOutPelangganForm.setVisible(false);
+	}
+
+	private void Initialize() {
+		frmCheckOutPelangganForm = new JFrame();
+		frmCheckOutPelangganForm.getContentPane().setBackground(new Color(255, 255, 255));
+		frmCheckOutPelangganForm.setBackground(new Color(255, 255, 255));
+		frmCheckOutPelangganForm.setBounds(100, 100, 600, 400);
+		frmCheckOutPelangganForm.setLocationRelativeTo(null);
+		frmCheckOutPelangganForm.setTitle(AppSettings.appTitle);
+		frmCheckOutPelangganForm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		
+		JPanel panelTop = new JPanel();
+		panelTop.setBackground(new Color(255, 255, 255));
+		FlowLayout flowLayoutPanelTop = (FlowLayout) panelTop.getLayout();
+		flowLayoutPanelTop.setAlignment(FlowLayout.LEFT);
+		flowLayoutPanelTop.setVgap(12);
+		flowLayoutPanelTop.setHgap(12);
+		
+		JPanel panelTopContent = new JPanel();
+		panelTopContent.setBackground(new Color(255, 255, 255));
+		panelTop.add(panelTopContent);
+		panelTopContent.setLayout(new BoxLayout(panelTopContent, BoxLayout.Y_AXIS));
+		
+		JLabel lblHeader = new JLabel("Cek Out Pelanggan");
+		lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		panelTopContent.add(lblHeader);
+		
+		panelTopContent.add(Box.createRigidArea(new Dimension(0, 5)));
+		
+		JLabel lblDesc = new JLabel("Cek out untuk pelanggan yang sudah selesai menginap");
+		lblDesc.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
+		panelTopContent.add(lblDesc);
+		
+		frmCheckOutPelangganForm.getContentPane().add(panelTop, BorderLayout.NORTH);
+		
+		JPanel panelContent = new JPanel();
+		panelContent.setBackground(new Color(255, 255, 255));
+		panelContent.setLayout(null);
+		
+		frmCheckOutPelangganForm.getContentPane().add(panelContent, BorderLayout.CENTER);
+		
+		JLabel lblDaftarKamar = new JLabel("Daftar kamar :");
+		lblDaftarKamar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		lblDaftarKamar.setBounds(12, 12, 560, 16);
+		panelContent.add(lblDaftarKamar);
+		
+		JScrollPane scrollTableDaftarKamar = new JScrollPane();
+		scrollTableDaftarKamar.setBounds(12, 36, 560, 200);
+		panelContent.add(scrollTableDaftarKamar);
+		
+		tableDaftarKamar = new JTable();
+		tableDaftarKamar.setFillsViewportHeight(true);
+		scrollTableDaftarKamar.setViewportView(tableDaftarKamar);
+		
+		JLabel lblDaftarKamar_1 = new JLabel("Daftar kamar :");
+		lblDaftarKamar_1.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		lblDaftarKamar_1.setBounds(12, 247, 560, 16);
+		panelContent.add(lblDaftarKamar_1);
+		
+		frmCheckOutPelangganForm.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Hide();
+				new MainForm().Show();
+			}
+		});
+	}
+}

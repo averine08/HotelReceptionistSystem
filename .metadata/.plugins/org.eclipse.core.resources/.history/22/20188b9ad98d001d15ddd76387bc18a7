@@ -1,0 +1,213 @@
+package Forms;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import java.awt.BorderLayout;
+
+import Model.Room;
+import Model.RoomType;
+import Program.AppSettings;
+import Data.*;
+
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Dimension;
+
+public class LihatDaftarKamarForm {
+
+	private JFrame frmLihatDaftarKamarForm;
+	private JPanel panelTable;
+	private JTable tableDaftarKamar;
+	private JComboBox<Object> comboRoomType;
+	private JRadioButton radioAll;
+	private JRadioButton radioAvailable;
+	private JRadioButton radioNotAvailable;
+	
+	private DefaultTableModel tableModel;
+
+	public LihatDaftarKamarForm() {
+		Initialize();
+	}
+	
+	public void Show() {
+		LihatDaftarKamarForm.this.frmLihatDaftarKamarForm.setVisible(true);
+	}
+	
+	public void Hide() {
+		LihatDaftarKamarForm.this.frmLihatDaftarKamarForm.setVisible(false);
+	}
+
+	private void Initialize() {
+		frmLihatDaftarKamarForm = new JFrame();
+		frmLihatDaftarKamarForm.getContentPane().setBackground(new Color(255, 255, 255));
+		frmLihatDaftarKamarForm.setBackground(new Color(240, 240, 240));
+		frmLihatDaftarKamarForm.setTitle(AppSettings.appTitle);
+		frmLihatDaftarKamarForm.setBounds(100, 100, 600, 450);
+		frmLihatDaftarKamarForm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		frmLihatDaftarKamarForm.setLocationRelativeTo(null);
+		
+		frmLihatDaftarKamarForm.getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		JPanel panelTop = new JPanel();
+		panelTop.setBackground(new Color(255, 255, 255));
+		FlowLayout flowLayoutPanelTop = (FlowLayout) panelTop.getLayout();
+		flowLayoutPanelTop.setAlignment(FlowLayout.LEFT);
+		flowLayoutPanelTop.setVgap(12);
+		flowLayoutPanelTop.setHgap(12);
+		
+		JPanel panelTopContent = new JPanel();
+		panelTopContent.setBackground(new Color(255, 255, 255));
+		panelTop.add(panelTopContent);
+		panelTopContent.setLayout(new BoxLayout(panelTopContent, BoxLayout.Y_AXIS));
+		
+		JLabel lblHeader = new JLabel("Daftar Kamar");
+		lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		panelTopContent.add(lblHeader);
+		
+		panelTopContent.add(Box.createRigidArea(new Dimension(0, 5)));
+		
+		JLabel lblDesc = new JLabel("Lihat semua kamar yang terdaftar di dalam sistem");
+		lblDesc.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
+		panelTopContent.add(lblDesc);
+		
+		frmLihatDaftarKamarForm.getContentPane().add(panelTop, BorderLayout.NORTH);
+		
+		panelTable = new JPanel();
+		panelTable.setBorder(null);
+		panelTable.setBackground(new Color(255, 255, 255));
+		
+		frmLihatDaftarKamarForm.getContentPane().add(panelTable, BorderLayout.CENTER);
+		frmLihatDaftarKamarForm.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Hide();
+				new MainForm().Show();
+			}
+		});
+		
+		JLabel lblRoomType = new JLabel("Tipe Kamar");
+		lblRoomType.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		lblRoomType.setBounds(12, 12, 70, 22);
+		panelTable.add(lblRoomType);
+		
+		ArrayList<RoomType> roomTypesList = new MsRoomType().getAllRoomTypeList();
+		Object[] roomTypesDataArray = new Object[roomTypesList.size() + 1];
+		roomTypesDataArray[0] = "Semua";
+		for(int i = 1; i < roomTypesDataArray.length; i++) {
+			roomTypesDataArray[i] = new MsRoomType().getAllRoomTypeList().get(i - 1).getName();
+		}
+		
+		comboRoomType = new JComboBox<Object>(roomTypesDataArray);
+		comboRoomType.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		comboRoomType.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoadData();
+			}
+		});
+		comboRoomType.setBounds(92, 12, 140, 22);
+		panelTable.add(comboRoomType);
+		
+		JLabel lblAvailability = new JLabel("Ketersediaan");
+		lblAvailability.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		lblAvailability.setBounds(12, 44, 70, 18);
+		panelTable.add(lblAvailability);
+		
+		radioAvailable = new JRadioButton("Tersedia");
+		radioAvailable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		radioAvailable.setBackground(new Color(255, 255, 255));
+		radioAvailable.setBounds(164, 42, 80, 23);
+		radioAvailable.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				LoadData();
+			}
+		});
+		panelTable.add(radioAvailable);
+		
+		radioNotAvailable = new JRadioButton("Penuh");
+		radioNotAvailable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		radioNotAvailable.setBackground(Color.WHITE);
+		radioNotAvailable.setBounds(246, 42, 100, 23);
+		radioNotAvailable.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				LoadData();
+			}
+		});
+		panelTable.add(radioNotAvailable);
+		
+		radioAll = new JRadioButton("Semua");
+		radioAll.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		radioAll.setSelected(true);
+		radioAll.setBackground(Color.WHITE);
+		radioAll.setBounds(92, 42, 70, 23);
+		radioAll.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				LoadData();
+			}
+		});
+		panelTable.add(radioAll);
+		
+		ButtonGroup radioGroup = new ButtonGroup();
+		radioGroup.add(radioAll);
+		radioGroup.add(radioAvailable);
+		radioGroup.add(radioNotAvailable);
+		
+		SetupTable();
+		LoadData();
+	}
+	
+	private void SetupTable() {
+		String[] columnNames = new String[] { "Tipe Kamar", "Nomor Kamar", "Harga", "Ketersediaan" };
+		tableModel = new DefaultTableModel(columnNames, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		
+		panelTable.setLayout(null);
+		
+		tableDaftarKamar = new JTable(tableModel);
+		tableDaftarKamar.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		tableDaftarKamar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableDaftarKamar.setRowHeight(24);
+		
+		JScrollPane scrollTableDaftarRuangan = new JScrollPane(tableDaftarKamar);
+		scrollTableDaftarRuangan.setBounds(12, 75, 560, 249);
+		
+		panelTable.add(scrollTableDaftarRuangan);
+	}
+
+	private void LoadData() {
+		tableModel.setRowCount(0);
+		
+		ArrayList<Room> roomsData = new MsRoom().getAllRoomList();
+		
+		if(!comboRoomType.getSelectedItem().toString().equals("Semua")) {
+			roomsData = (ArrayList<Room>) roomsData.stream().filter(room -> room.getRoomType().getName().equals(comboRoomType.getSelectedItem().toString())).collect(Collectors.toList());
+		}
+		
+		if(!radioAll.isSelected()) {
+			roomsData = (ArrayList<Room>) roomsData.stream().filter(room -> room.isFilled() == radioNotAvailable.isSelected()).collect(Collectors.toList());
+		}
+		
+		for (Room room : roomsData) {
+			tableModel.addRow(new Object[] { room.getRoomType().getName(), room.getRoomNumber(), room.getRoomType().getPrice(), room.isFilled() ? "Penuh" : "Tersedia" });
+		}
+		
+		tableModel.fireTableDataChanged();
+	}
+}
